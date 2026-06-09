@@ -1,0 +1,12 @@
+streamlit
+PyPDF2
+torch
+numpy
+transformers
+langchain-text-splitters
+langchain-community
+faiss-cpu
+sentence-transformers
+langchain-google-genai
+google-generativeai
+datasets
