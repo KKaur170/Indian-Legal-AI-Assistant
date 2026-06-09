@@ -159,10 +159,11 @@ streamlit run src/app.py
 
 ##  Future Improvements
 
-* **Full-Document Context Windowing:** Upgrading from sequence-pairs to global document architectures to process entire multi-page legal files at once.
-* **100% IPC Coverage:** Scaling the multi-label prediction pipeline to encompass *every* section of the Indian Penal Code, moving beyond the current top 100.
-* **Model Expansion:** Benchmarking newer, long-context LLMs and specialized Transformers to boost legal extraction accuracy.
-* **Relational Crime Mapping:** Building analytical features to visually map the dependencies and co-occurrences between different criminal offenses.
+* Longformer-based full judgment processing
+* Graph Neural Networks for legal citation networks
+* Cross-document precedent retrieval
+* Multi-lingual Indian legal reasoning
+* Explainable AI for charge prediction
 
 ---
 
@@ -172,10 +173,18 @@ streamlit run src/app.py
 
 *B.E. Computer Engineering | Thapar Institute of Engineering and Technology*
 
-Spearheaded the Deep Learning architecture, model training pipelines, and core Natural Language Processing math for this platform. Primary engineering contributions include:
-* Designing the Sequence-Pair Contextual Window for Legal-BERT.
-* Engineering the mathematical optimization of the Multi-Class Focal Loss and dynamic threshold matrices.
-* Leading the end-to-end model training, evaluation, and architectural strategy for the predictive NLP subsystems.
+**Areas of Interest:**
+* Natural Language Processing
+* Legal AI
+* Retrieval-Augmented Generation
+* Deep Learning
+* Transformer Architectures
+* Applied Machine Learning
+
+**Key Contributions:**
+* Sequence-Pair Legal Classification Architecture
+* Dynamic Threshold Calibration Framework
+* End-to-End Legal AI System Design
 
 **Let's Connect:** [GitHub](https://github.com/KKaur170) | [LinkedIn](https://www.linkedin.com/in/khushnoor-kaur-bb7684345/)
 
