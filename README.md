@@ -31,6 +31,7 @@ An advanced, multi-pipeline deep learning architecture designed to automate the 
 **Functionality:** Upload a massive legal PDF and chat with it. Ask "What was the final ruling?" and get an instant, fact-checked answer.
 
 **Technical Implementation:** Powered by `PyPDF2`, LangChain, FAISS Vector Search, and Gemini 2.5 Flash.
+
 <img src="assets/home.png" width="800" alt="Home Dashboard">
 
 <br>
@@ -39,6 +40,7 @@ An advanced, multi-pipeline deep learning architecture designed to automate the 
 **Functionality:** Reads a legal document like a human does—remembering the context of the previous sentence to accurately determine if the judge is stating a Fact, citing a Precedent, or making a Ruling.
 
 **Technical Implementation:** Implements **Sequence Pair Classification** (`[Previous] [SEP] [Current]`) on `law-ai/InLegalBERT`. We replaced standard Cross-Entropy with **Multi-Class Focal Loss (γ = 2.0)** to aggressively correct class imbalances.
+
 <img src="assets/classifier.png" width="800" alt="Sentence Classifier">
 
 <br>
@@ -47,6 +49,7 @@ An advanced, multi-pipeline deep learning architecture designed to automate the 
 **Functionality:** Type in a plain-English description of a crime, and the AI instantly predicts all applicable Indian Penal Code (IPC) sections with confidence scores.
 
 **Technical Implementation:** Fine-tuned `nlpaueb/legal-bert`. Engineered a custom optimization framework that bypasses the standard `0.5` binary cutoff, utilizing an `optimal_thresholds.npy` matrix to trigger 101 distinct classes independently. **This mathematical optimization alone yielded a +10.54% Absolute F1 Gain.**
+
 <img src="assets/ipc.png" width="800" alt="IPC Predictor">
 
 <br>
@@ -55,6 +58,7 @@ An advanced, multi-pipeline deep learning architecture designed to automate the 
 **Functionality:** Condenses lengthy, confusing legal arguments into short, easy-to-read summaries in seconds.
 
 **Technical Implementation:** Zero-shot abstractive summarization via `facebook/bart-large-cnn`, utilizing constrained beam search (`num_beams = 4`) to maintain judicial chronology without hallucination.
+
 <img src="assets/summarizer.png" width="800" alt="Summarizer">
 
 ---
@@ -165,6 +169,7 @@ streamlit run src/app.py
 ##  Author & AI Architect
 
 **Khushnoor Kaur** 
+
 *B.E. Computer Engineering | Thapar Institute of Engineering and Technology*
 
 Spearheaded the Deep Learning architecture, model training pipelines, and core Natural Language Processing math for this platform. Primary engineering contributions include:
