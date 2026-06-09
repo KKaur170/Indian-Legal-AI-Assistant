@@ -29,6 +29,7 @@ An advanced, multi-pipeline deep learning architecture designed to automate the 
 
 ### 1. Document Q&A (RAG Pipeline)
 **Functionality:** Upload a massive legal PDF and chat with it. Ask "What was the final ruling?" and get an instant, fact-checked answer.
+
 **Technical Implementation:** Powered by `PyPDF2`, LangChain, FAISS Vector Search, and Gemini 2.5 Flash.
 <img src="assets/home.png" width="800" alt="Home Dashboard">
 
@@ -36,6 +37,7 @@ An advanced, multi-pipeline deep learning architecture designed to automate the 
 
 ### 2. Contextual Sentence Classifier
 **Functionality:** Reads a legal document like a human does—remembering the context of the previous sentence to accurately determine if the judge is stating a Fact, citing a Precedent, or making a Ruling.
+
 **Technical Implementation:** Implements **Sequence Pair Classification** (`[Previous] [SEP] [Current]`) on `law-ai/InLegalBERT`. We replaced standard Cross-Entropy with **Multi-Class Focal Loss (γ = 2.0)** to aggressively correct class imbalances.
 <img src="assets/classifier.png" width="800" alt="Sentence Classifier">
 
@@ -43,6 +45,7 @@ An advanced, multi-pipeline deep learning architecture designed to automate the 
 
 ### 3. Multi-Label IPC Charge Predictor
 **Functionality:** Type in a plain-English description of a crime, and the AI instantly predicts all applicable Indian Penal Code (IPC) sections with confidence scores.
+
 **Technical Implementation:** Fine-tuned `nlpaueb/legal-bert`. Engineered a custom optimization framework that bypasses the standard `0.5` binary cutoff, utilizing an `optimal_thresholds.npy` matrix to trigger 101 distinct classes independently. **This mathematical optimization alone yielded a +10.54% Absolute F1 Gain.**
 <img src="assets/ipc.png" width="800" alt="IPC Predictor">
 
@@ -50,6 +53,7 @@ An advanced, multi-pipeline deep learning architecture designed to automate the 
 
 ### 4. AI Legal Summarizer
 **Functionality:** Condenses lengthy, confusing legal arguments into short, easy-to-read summaries in seconds.
+
 **Technical Implementation:** Zero-shot abstractive summarization via `facebook/bart-large-cnn`, utilizing constrained beam search (`num_beams = 4`) to maintain judicial chronology without hallucination.
 <img src="assets/summarizer.png" width="800" alt="Summarizer">
 
@@ -59,18 +63,21 @@ An advanced, multi-pipeline deep learning architecture designed to automate the 
 
 ### 1. Retrieval-Augmented Generation (RAG) (Tab 1)
 Allows users to upload extensive legal PDFs and query them conversationally without hallucination.
+
 * **Extraction & Chunking:** `PyPDF2` combined with LangChain's `RecursiveCharacterTextSplitter`.
 * **Vector Store:** Semantic embeddings stored in a local `FAISS` database powered by `all-MiniLM-L6-v2`.
 * **Generation:** Context is retrieved and injected into Gemini 2.5 Flash for precise, document-grounded responses.
 
 ### 2. Context-Aware Rhetorical Role Classification (Tab 2)
 Analyzes individual sentences within Indian Supreme Court judgments and classifies them into 13 distinct rhetorical roles (e.g., *RATIO, PRECEDENT, STATUTE, ANALYSIS*).
+
 * **Foundational Model:** `law-ai/InLegalBERT`
 * **Engineering Highlight (Sequence Pair Classification):** Standard classifiers process sentences independently, which fails in legal text where meaning relies heavily on historical context. We engineered a sequence pair architecture (`[Previous Sentence] [SEP] [Current Sentence]`) to provide sequential narrative memory to the model.
 * **Loss Function Optimization:** Addressed severe long-tail class imbalance by replacing traditional Cross-Entropy with **Multi-Class Focal Loss (γ = 2.0)**, aggressively penalizing misclassified minority examples like `STATUTE`.
 
 ### 3. Multi-Label IPC Prediction (Document-Level) (Tab 3)
 Predicts multiple overlapping Indian Penal Code (IPC) sections directly from unstructured crime scenarios.
+
 * **Foundational Model:** `nlpaueb/legal-bert-base-uncased`
 * **Engineering Highlight (Dynamic Threshold Calibration):** Bypassed the standard `0.5` binary probability cutoff. Engineered a custom optimization framework that evaluated validation logits to generate an `optimal_thresholds.npy` matrix, selecting the optimal trigger threshold independently for 101 distinct IPC classes. This mathematical optimization alone yielded a **+10.54% Absolute F1 Gain**.
 
