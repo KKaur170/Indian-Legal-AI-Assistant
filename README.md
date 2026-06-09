@@ -93,7 +93,7 @@ Generates concise legal summaries while maintaining document privacy through loc
 ##  Repository Structure
 
 ```text
-Indian-Legal-AI-Assiatant/
+Indian-Legal-AI-Assistant/
 ├── assets/                    # UI screenshots and system diagrams
 │   ├── home.png
 │   ├── classifier.png
