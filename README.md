@@ -118,7 +118,7 @@ Indian-Legal-AI-Assistant/
 ### 1. Clone the Repository:
 
 ```bash
-git clone https://github.com/KKaur170
+git clone [https://github.com/KKaur170/Indian-Legal-AI-Assistant.git](https://github.com/KKaur170/Indian-Legal-AI-Assistant.git)
 cd Indian-Legal-AI-Assistant
 ```
 
