@@ -1,0 +1,68 @@
+# =========================
+# Virtual Environments
+# =========================
+venv/
+env/
+.venv/
+
+# =========================
+# Heavy AI Model Weights 
+# (Hosted on Hugging Face instead)
+# =========================
+*.safetensors
+*.npy
+*.bin
+*.pkl
+*.pth
+
+# =========================
+# Custom Model Directories
+# =========================
+ipc_section/
+legal_brain/
+legal_summarizer/
+
+# =========================
+# Python Cache & Build Files
+# =========================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# =========================
+# IDE & Editor Files
+# =========================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# =========================
+# Environment Variables
+# =========================
+.env
+.env.local
+
+# =========================
+# OS Generated Files
+# =========================
+.DS_Store
+Thumbs.db
