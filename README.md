@@ -32,7 +32,7 @@ An advanced, multi-pipeline deep learning architecture designed to automate the 
 
 **Technical Implementation:** Powered by `PyPDF2`, LangChain, FAISS Vector Search, and Gemini 2.5 Flash.
 
-<img src="assets/home.png" width="800" alt="Home Dashboard">
+<img src="assets/home.png" width="100%" alt="Home Dashboard">
 
 <br>
 
@@ -41,7 +41,7 @@ An advanced, multi-pipeline deep learning architecture designed to automate the 
 
 **Technical Implementation:** Implements **Sequence Pair Classification** (`[Previous] [SEP] [Current]`) on `law-ai/InLegalBERT`. We replaced standard Cross-Entropy with **Multi-Class Focal Loss (γ = 2.0)** to aggressively correct class imbalances.
 
-<img src="assets/classifier.png" width="800" alt="Sentence Classifier">
+<img src="assets/classifier.png" width="100%" alt="Sentence Classifier">
 
 <br>
 
@@ -50,7 +50,7 @@ An advanced, multi-pipeline deep learning architecture designed to automate the 
 
 **Technical Implementation:** Fine-tuned `nlpaueb/legal-bert`. Engineered a custom optimization framework that bypasses the standard `0.5` binary cutoff, utilizing an `optimal_thresholds.npy` matrix to trigger 101 distinct classes independently. **This mathematical optimization alone yielded a +10.54% Absolute F1 Gain.**
 
-<img src="assets/ipc.png" width="800" alt="IPC Predictor">
+<img src="assets/ipc.png" width="100%" alt="IPC Predictor">
 
 <br>
 
@@ -59,7 +59,7 @@ An advanced, multi-pipeline deep learning architecture designed to automate the 
 
 **Technical Implementation:** Zero-shot abstractive summarization via `facebook/bart-large-cnn`, utilizing constrained beam search (`num_beams = 4`) to maintain judicial chronology without hallucination.
 
-<img src="assets/summarizer.png" width="800" alt="Summarizer">
+<img src="assets/summarizer.png" width="100%" alt="Summarizer">
 
 ---
 
