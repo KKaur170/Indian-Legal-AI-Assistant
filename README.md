@@ -184,11 +184,6 @@ streamlit run src/app.py
 * Transformer Architectures
 * Applied Machine Learning
 
-**Key Contributions:**
-* Sequence-Pair Legal Classification Architecture
-* Dynamic Threshold Calibration Framework
-* End-to-End Legal AI System Design
-
 **Let's Connect:** [GitHub](https://github.com/KKaur170) | [LinkedIn](https://www.linkedin.com/in/khushnoor-kaur-bb7684345/)
 
 ---
