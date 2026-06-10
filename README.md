@@ -7,110 +7,112 @@
 ![Hugging Face](https://img.shields.io/badge/Hugging_Face-Transformers-FFD21E?logo=huggingface&logoColor=black)
 ![Streamlit](https://img.shields.io/badge/Streamlit-Deployment-FF4B4B?logo=streamlit&logoColor=white)
 
-An advanced, multi-pipeline deep learning architecture designed to automate the extraction of legal intelligence from highly complex, unstructured Indian Supreme Court judgments and legal documents.
+An advanced, multi-pipeline deep learning architecture engineered to automate legal intelligence extraction from highly complex, unstructured Indian Supreme Court judgments and legal legal records.
 
 **[ Live Hugging Face Deployment](https://huggingface.co/spaces/KKaur17/Indian-Legal-AI-Assistant)** | **[ GitHub Repository](https://github.com/KKaur170/Indian-Legal-AI-Assistant)**
+
+<br>
+
+*(Demo: End-to-End Legal Analysis)*
+<img src="assets/demo.gif" width="100%" alt="ILAA Demo">
 
 </div>
 
 ---
 
-##  Executive Summary
+##  Real-World Impact (Why This Matters)
+The Indian judicial system handles an immense volume of pending cases trapped inside dense, unstructured documents. Legal professionals spend countless billable hours manually parsing case laws, FIRs, and petitions to extract core facts, isolate arguments, or discover applicable statutes. 
 
-**The Problem:** The Indian judicial system processes millions of incredibly dense, unstructured documents. Legal professionals spend countless billable hours manually reading case laws, FIRs, and judgments just to extract basic facts, find relevant laws, and understand the judge's reasoning.
+**ILAA transforms raw legal data into structured, actionable insights.** By replacing generic, one-size-fits-all models with specialized domain-specific architectures, this system drastically reduces cognitive load and eliminates the text-truncation and hallucination risks of generic conversational AI.
 
-**The Solution:** We built an AI platform that acts as a junior legal associate. Instead of relying on generic chatbots (which often hallucinate laws), this platform uses specialized, custom-trained Machine Learning models engineered specifically for the language of the Indian Supreme Court. It can instantly summarize 100-page rulings, predict criminal charges from plain-English scenarios, and classify judicial text with high precision.
+###  Approach Comparison
+| Approach | Limitation | ILAA's Solution |
+| :--- | :--- | :--- |
+| **Generic ChatGPT** | Hallucinates statutes and lacks specific contextual boundary mapping. | Grounded Generation (RAG) tied strictly to document context. |
+| **Traditional Keyword Search** | Misses semantic nuances and structural relations. | FAISS Semantic Vector Search with dynamic embedding matrices. |
+| **Standard Text Classifiers** | Processes sentences blindly in isolation, breaking narrative flow. | Custom Sequence-Pair Legal Context Windows[cite: 1]. |
 
 ---
 
-##  Platform Interface & Features
+##  Platform Architecture & User Interface
 
-*(Note: The system is deployed via a Streamlit-based interactive control center capable of orchestrating multiple AI pipelines simultaneously.)*
+By merging core neural pipelines directly with an interactive dashboard UI[cite: 1], ILAA provides legal teams with a seamless, transparent analytical workbench.
 
-### 1. Document Q&A (RAG Pipeline)
-**Functionality:** Upload a massive legal PDF and chat with it. Ask "What was the final ruling?" and get an instant, fact-checked answer.
-
-**Technical Implementation:** Powered by `PyPDF2`, LangChain, FAISS Vector Search, and Gemini 2.5 Flash.
+### 1. Document Question Answering (RAG) & Private Summarization
+* **RAG Flow:** `Raw Legal PDF` ➔ `PyPDF2 Text Extraction` ➔ `LangChain Semantic Chunking` ➔ `HuggingFace Embeddings` ➔ `FAISS Vector Store` ➔ `Context Retrieval` ➔ `Gemini 2.5 Flash Generation`[cite: 1]
+* **Privacy-Preserving Summarizer:** Runs entirely locally via a 12-layer encoder/12-layer decoder `facebook/bart-large-cnn` pipeline[cite: 1]. It handles document overflow through an NLTK sentence-tokenization chunking engine limited to a threshold of 400 words per block[cite: 1].
 
 <img src="assets/home.png" width="100%" alt="Home Dashboard">
+<img src="assets/summarizer.png" width="100%" alt="Summarizer">
 
-<br>
-
-### 2. Contextual Sentence Classifier
-**Functionality:** Reads a legal document like a human does—remembering the context of the previous sentence to accurately determine if the judge is stating a Fact, citing a Precedent, or making a Ruling.
-
-**Technical Implementation:** Implements **Sequence Pair Classification** (`[Previous] [SEP] [Current]`) on `law-ai/InLegalBERT`. We replaced standard Cross-Entropy with **Multi-Class Focal Loss (γ = 2.0)** to aggressively correct class imbalances.
+### 2. Context-Aware Rhetorical Role Classification
+* **Architecture Flow:** `Sentence Splitting` ➔ `Sequence-Pair Formatting ([Prev] [SEP] [Current])` ➔ `InLegalBERT Core Encoder` ➔ `Multi-Class Focal Loss Head` ➔ `13 Legal Rhetorical Roles`[cite: 1]
 
 <img src="assets/classifier.png" width="100%" alt="Sentence Classifier">
 
-<br>
-
 ### 3. Multi-Label IPC Charge Predictor
-**Functionality:** Type in a plain-English description of a crime, and the AI instantly predicts all applicable Indian Penal Code (IPC) sections with confidence scores.
-
-**Technical Implementation:** Fine-tuned `nlpaueb/legal-bert`. Engineered a custom optimization framework that bypasses the standard `0.5` binary cutoff, utilizing an `optimal_thresholds.npy` matrix to trigger 101 distinct classes independently. **This mathematical optimization alone yielded a +10.54% Absolute F1 Gain.**
+* **Architecture Flow:** `Plain-English Crime Scenario` ➔ `legal-bert-base-uncased Tokenization` ➔ `Sliding Window Tiling` ➔ `Sigmoid Multi-Label Probability Layers` ➔ `Dynamic Threshold Calibration Matrix` ➔ `Applicable Penal Codes`[cite: 1]
 
 <img src="assets/ipc.png" width="100%" alt="IPC Predictor">
 
-<br>
+---
 
-### 4. AI Legal Summarizer
-**Functionality:** Condenses lengthy, confusing legal arguments into short, easy-to-read summaries in seconds.
+##  Training Analytics & Model Convergence
 
-**Technical Implementation:** Zero-shot abstractive summarization via `facebook/bart-large-cnn`, utilizing constrained beam search (`num_beams = 4`) to maintain judicial chronology without hallucination.
+The underlying Transformer architectures underwent comprehensive training, parameter freezing, and evaluation against human-annotated legal data[cite: 1].
 
-<img src="assets/summarizer.png" width="100%" alt="Summarizer">
+### Pipeline A: Rhetorical Role Classification (InLegalBERT)
+Trained on the OpenNyAI BUILD dataset using a Stratified 85/15 split[cite: 1]. To preserve legal vocabulary semantics while adjusting for task-specific reasoning, the base embeddings and bottom 6 layers were frozen, isolating updates to the top 6 encoder layers[cite: 1].
+
+| Model Selection (Ablation Study)[cite: 1] | Training vs. Validation Convergence[cite: 1] |
+| :---: | :---: |
+| <img src="assets/comparative_f1_study.png" width="100%" alt="Ablation Study"> | <img src="assets/loss_curve.png" width="100%" alt="Loss Curve"> |
+| *Our custom InLegalBERT configuration achieved a champion **71.41% F1-Macro** (80.17% Accuracy)[cite: 1].* | *Stable convergence over 5 epochs using mixed-precision optimization (FP16)[cite: 1].* |
+
+**Class-Wise Performance Matrix:**
+The implementation of Multi-Class Focal Loss effectively stabilized the network weights against long-tail class imbalances, ensuring strong diagonal metrics even on scarce categories like `STATUTE`, `ISSUE`, and `PRE_NOT_RELIED`[cite: 1].
+<img src="assets/inlegalbert_confusion_matrix.png" width="100%" alt="Confusion Matrix">
+
+### Pipeline B: Multi-Label IPC Prediction
+Fine-tuned on the Exploration-Lab/IL-TUR dataset with a custom mapping targeting a 101-dimension space (Top 100 high-frequency IPC sections + 1 unified `IPC_OTHER` catch-all)[cite: 1]. 
+
+| Multi-Label BCE Convergence[cite: 1] | Impact of Dynamic Threshold Optimization[cite: 1] |
+| :---: | :---: |
+| <img src="assets/pipeline_B_loss_curve.png" width="100%" alt="Pipeline B Loss"> | <img src="assets/optimization_boost_chart.png" width="100%" alt="Optimization Boost"> |
+| *Textbook binary cross-entropy convergence across 4 epochs on an NVIDIA T4 GPU[cite: 1].* | *Calibrating independent class decision boundaries from validation logits yielded an absolute **+10.54% boost** over standard static thresholds[cite: 1].* |
 
 ---
 
-##  Core AI Pipelines & Engineering Highlights
+##  Novel Research & Engineering Contributions
 
-### 1. Retrieval-Augmented Generation (RAG) (Tab 1)
-Allows users to upload extensive legal PDFs and query them conversationally without hallucination.
+### Challenge 1: Severe Context Truncation and Narrative Disruption
+* **Problem:** Sentences in legal narratives heavily depend on prior context. Standard single-sentence processing destroys historical dependencies[cite: 1].
+* **Solution (Sequence-Pair Windowing):** Configured tokenizers to concatenate sequences using a structural separator format: `[Previous Sentence] [SEP] [Current Sentence]`[cite: 1]. This establishes localized memory tracking within the attention mechanism[cite: 1].
 
-* **Extraction & Chunking:** `PyPDF2` combined with LangChain's `RecursiveCharacterTextSplitter`.
-* **Vector Store:** Semantic embeddings stored in a local `FAISS` database powered by `all-MiniLM-L6-v2`.
-* **Generation:** Context is retrieved and injected into Gemini 2.5 Flash for precise, document-grounded responses.
+### Challenge 2: Long-Tail Minority Class Erasure
+* **Problem:** Text datasets are completely dominated by basic case facts, causing standard cross-entropy loss functions to ignore critical minority categories like statutes and precedents[cite: 1].
+* **Solution:** Discarded standard Cross-Entropy in favor of **Multi-Class Focal Loss ($\gamma = 2.0$)**[cite: 1]. This mathematically reduces loss contributions from easy, repetitive majority classes and forces gradient priority onto misclassified minority inputs[cite: 1].
 
-### 2. Context-Aware Rhetorical Role Classification (Tab 2)
-Analyzes individual sentences within Indian Supreme Court judgments and classifies them into 13 distinct rhetorical roles (e.g., *RATIO, PRECEDENT, STATUTE, ANALYSIS*).
-
-* **Foundational Model:** `law-ai/InLegalBERT`
-* **Engineering Highlight (Sequence Pair Classification):** Standard classifiers process sentences independently, which fails in legal text where meaning relies heavily on historical context. We engineered a sequence pair architecture (`[Previous Sentence] [SEP] [Current Sentence]`) to provide sequential narrative memory to the model.
-* **Loss Function Optimization:** Addressed severe long-tail class imbalance by replacing traditional Cross-Entropy with **Multi-Class Focal Loss (γ = 2.0)**, aggressively penalizing misclassified minority examples like `STATUTE`.
-
-### 3. Multi-Label IPC Prediction (Document-Level) (Tab 3)
-Predicts multiple overlapping Indian Penal Code (IPC) sections directly from unstructured crime scenarios.
-
-* **Foundational Model:** `nlpaueb/legal-bert-base-uncased`
-* **Engineering Highlight (Dynamic Threshold Calibration):** Bypassed the standard `0.5` binary probability cutoff. Engineered a custom optimization framework that evaluated validation logits to generate an `optimal_thresholds.npy` matrix, selecting the optimal trigger threshold independently for 101 distinct IPC classes. This mathematical optimization alone yielded a **+10.54% Absolute F1 Gain**.
-
-### 4. Zero-Shot Legal Summarization (Tab 4)
-Generates concise legal summaries while maintaining document privacy through local inference using `facebook/bart-large-cnn`. Implemented beam search constraints (`num_beams = 4`, `early_stopping = True`) to maintain narrative coherence and judicial chronology.
+### Challenge 3: Rigid Binary Cutoff Handicaps in Multi-Label Inference
+* **Problem:** Using a uniform 0.5 probability threshold across 101 distinct classes limits true multi-label recall since rare, specific crimes produce different probability bounds than common offenses[cite: 1].
+* **Solution (Dynamic Threshold Calibration):** Engineered an post-training optimization routine that scanned individual validation logits from `0.01` to `0.99` independently for every target node[cite: 1]. Saving unique target thresholds into an `optimal_thresholds.npy` array generated the massive **27.83% Macro-F1 performance boost**[cite: 1].
 
 ---
 
-##  Repository Structure
+##  Datasets & Model Cards
 
-```text
-Indian-Legal-AI-Assistant/
-├── assets/                    # UI screenshots and system diagrams
-│   ├── home.png
-│   ├── classifier.png
-│   ├── ipc.png
-│   └── summarizer.png
-├── notebooks/                 # Core Machine Learning Training Pipelines
-│   ├── IPC_Section_Training.ipynb
-│   └── Text_Classification_Training.ipynb
-├── src/
-│   ├── app.py                 # Streamlit frontend UI and session state logic
-│   └── inference.py           # Custom PyTorch model loading and prediction
-├── requirements.txt           # Environment dependencies
-├── .gitignore                 # Excludes heavy .bin/.safetensors weights
-└── README.md                  # Project documentation
+### Dataset Profiles
+* **Rhetorical Role Pipeline:** Fine-tuned via the OpenNyAI BUILD legal dataset using a Stratified 85/15 configuration[cite: 1].
+* **IPC Section Pipeline:** Extracted from the Exploration-Lab/IL-TUR corpus, configured through an 80/20 layout using MultiLabelBinarizer vector schemas[cite: 1].
+* **Summarization Pipeline:** Benchmarked against human abstracts using the AILA (Artificial Intelligence for Legal Assistance) corpus[cite: 1].
 
-```
-*(Note: Custom .bin and .safetensors model weights exceed GitHub storage limits and are securely hosted within the Hugging Face deployment environment.)*
+### Model Configuration Cards
+| Component / Task | Base Model Target Architecture | Training Hyperparameters & Constraints |
+| :--- | :--- | :--- |
+| **Pipeline A: Classification** | `law-ai/InLegalBERT`[cite: 1] | Epochs: 5, LR: $5 \times 10^{-5}$, Max Length: 256, AdamW Optimizer[cite: 1] |
+| **Pipeline B: IPC Prediction** | `nlpaueb/legal-bert-base-uncased`[cite: 1] | Epochs: 4, LR: $2 \times 10^{-5}$, Max Length: 512, Dropout: 0.3[cite: 1] |
+| **Pipeline C: Summarizer** | `facebook/bart-large-cnn`[cite: 1] | Zero-Shot, Beam Search (num_beams=5), Max Length: 150, Min Length: 50[cite: 1] |
+| **Document Q&A Interface** | Gemini 2.5 Flash | Temperature: 0.0, Grounded Extraction Prompt Routing |
 
 ---
 
